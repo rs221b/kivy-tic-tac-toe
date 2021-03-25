@@ -4,7 +4,7 @@ from kivy.uix.label import Label
 from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivy.uix.floatlayout import FloatLayout
-
+import time
 
 array = [-1]*9
 print(array[1])
@@ -54,20 +54,35 @@ def check_win():
 
 def show_popup():
     pop = Popup(title='Winner', content=Label(text=''), auto_dismiss=False)
-    pop.content.text = symbol + " is winner"
+    winner = ""
+    if symbol == 'x':
+        winner = "player 1 with symbol: x wins"
+    else:
+        winner = "player 2 with symbol: o wins"
+    pop.content.text = winner
     pop.open()
 
-    
 
 class MyTTT(GridLayout):
     global array, symbol
 
     pass
-    
+
+    turns = 0
+
+    turn1 = ObjectProperty(None)
+    turn2 = ObjectProperty(None)
+
     def update_button_text(self, num):
         self.children[9-num].text = str(symbol)
 
-
+    def turn(self):
+        if self.turns%2==1:
+            self.turn1.text = "Wait"
+            self.turn2.text = "Go"
+        else:
+            self.turn1.text = "Go"
+            self.turn2.text = "Wait"
    
     def onClick(self, num):
         global array, symbol
@@ -75,12 +90,15 @@ class MyTTT(GridLayout):
         duplicate = check_duplicate(num)
         print (duplicate)
         if not duplicate:
+            self.turns +=1
             self.update_button_text(num)
+            self.turn()
             win = check_win()
             # self.b1.text = symbol
             print (win)
             if win:
                 array = [-1]*9
+                time.sleep(1)
                 show_popup()
             change()
 
