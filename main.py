@@ -97,8 +97,8 @@ class MyTTT(GridLayout):
             # self.b1.text = symbol
             print (win)
             if win:
-                array = [-1]*9
                 time.sleep(1)
+                array = [-1]*9
                 show_popup()
             change()
 
@@ -107,5 +107,5 @@ class TicTacToe(App):
         return MyTTT()
     
 
-ttt = TicTacToe()
-ttt.run()
+if __name__ == "__main__":
+    TicTacToe().run()
